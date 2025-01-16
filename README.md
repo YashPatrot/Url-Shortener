@@ -55,9 +55,18 @@ $ npm run start -- --entryFile repl
 ## SWC (Speedy Web Compiler)
 
 ```bash
-#To run the application in watch mode
+# To run the application in watch mode
 $ nest start -b swc
 ```
+
+
+## Generate Documentation
+
+```bash
+#To generate the documentation for our application, use the following command:
+$npx @compodoc/compodoc -p tsconfig.json -s
+```
+
 
 ## Run tests
 
