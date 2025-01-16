@@ -52,6 +52,12 @@ $ npm run start:prod
 $ npm run start -- --entryFile repl
 ``` 
 
+## SWC (Speedy Web Compiler)
+
+```bash
+#To run the application in watch mode
+$ nest start -b swc
+
 ## Run tests
 
 ```bash
