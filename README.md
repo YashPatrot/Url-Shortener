@@ -57,6 +57,7 @@ $ npm run start -- --entryFile repl
 ```bash
 #To run the application in watch mode
 $ nest start -b swc
+```
 
 ## Run tests
 
