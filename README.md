@@ -45,6 +45,13 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+## Read-Eval-Print-Loop(REPL)
+
+```bash
+# To run your NestJS application in REPL mode
+$ npm run start -- --entryFile repl
+``` 
+
 ## Run tests
 
 ```bash
