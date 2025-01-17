@@ -59,7 +59,6 @@ $ npm run start -- --entryFile repl
 $ nest start -b swc
 ```
 
-
 ## Generate Documentation
 
 ```bash
@@ -67,6 +66,18 @@ $ nest start -b swc
 $npx @compodoc/compodoc -p tsconfig.json -s
 ```
 
+## Prisma
+
+```bash
+# Initialize Prisma
+$ npx prisma init
+
+#Generate Prisma client after making changes to the schema
+$ npx prisma generate
+
+#Run database migrations
+$ npx prisma migrate dev --name init
+```
 
 ## Run tests
 
