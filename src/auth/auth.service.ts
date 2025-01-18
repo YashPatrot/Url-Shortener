@@ -4,14 +4,18 @@ import { AuthChallengeDto } from './dto/authChallenge.dto';
 import { SignInDto } from './dto/signin.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { CognitoService } from 'src/aws/cognito/cognito.service';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class AuthService {
-    constructor(private readonly cognitoService: CognitoService) { }
+    constructor(private readonly cognitoService: CognitoService, private readonly usersService: UsersService) {
+    }
 
     async signup(data: SignUpDto) {
         try {
-            return await this.cognitoService.signUp(data.name, data.email, data.password);
+            const response = await this.cognitoService.signUp(data.name, data.email, data.password);
+            await this.usersService.create({ userId: response.User.Username, name: data.name, email: data.email });
+            return response;
         }
         catch (error) {
             throw error;
@@ -46,5 +50,14 @@ export class AuthService {
     }
     async signout() {
         return 'signout';
+    }
+
+    async validateToken(paload: string) {
+        try {
+            return await this.cognitoService.validateAccessToken(paload);
+        }
+        catch (error) {
+            throw error;
+        }
     }
 }

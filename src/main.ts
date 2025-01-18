@@ -7,7 +7,18 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('Url Shortener')
     .setDescription('Url Shortener API')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        in: 'header',
+        name: 'Authorization'
+      },
+      'access-token',
+    )
     .setVersion('0.0.1')
+
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
