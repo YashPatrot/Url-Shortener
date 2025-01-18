@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { CognitoIdentityProviderClient, AdminCreateUserCommand, AdminCreateUserCommandInput, AdminInitiateAuthCommand, AdminInitiateAuthCommandInput, ChangePasswordCommandInput, ChangePasswordCommand, RespondToAuthChallengeCommandInput, RespondToAuthChallengeCommand, ChallengeNameType, AdminCreateUserCommandOutput, AdminInitiateAuthCommandOutput, RespondToAuthChallengeCommandOutput, ChangePasswordCommandOutput } from "@aws-sdk/client-cognito-identity-provider";
 import crypto from 'crypto';
+import { CognitoJwtVerifier } from "aws-jwt-verify";
 
 @Injectable()
 export class CognitoService {
@@ -9,12 +10,19 @@ export class CognitoService {
     private readonly AWS_COGNITO_CLIENT_ID: string;
     private readonly AWS_COGNITO_CLIENT_SECRET: string;
     private readonly cognitoIdentityProviderClient: CognitoIdentityProviderClient;
+    private readonly cognitoJwtVerifier: any;
     constructor(private readonly configService: ConfigService) {
         this.AWS_COGNITO_USER_POOL_ID = this.configService.get<string>('AWS_COGNITO_USER_POOL_ID');
         this.AWS_COGNITO_CLIENT_ID = this.configService.get<string>('AWS_COGNITO_CLIENT_ID');
         this.AWS_COGNITO_CLIENT_SECRET = this.configService.get<string>('AWS_COGNITO_CLIENT_SECRET');
         this.cognitoIdentityProviderClient = new CognitoIdentityProviderClient({
             region: this.configService.get<string>('AWS_REGION'),
+        });
+        this.cognitoJwtVerifier = CognitoJwtVerifier.create({
+            region: this.configService.get<string>('AWS_REGION'),
+            userPoolId: this.AWS_COGNITO_USER_POOL_ID,
+            clientId: this.configService.get<string>('AWS_COGNITO_CLIENT_ID'),
+            tokenUse: 'access',
         });
     }
 
@@ -128,7 +136,14 @@ export class CognitoService {
             throw error;
         }
     }
-
+    async validateAccessToken(payload: any): Promise<any> {
+        try {
+            return await this.cognitoJwtVerifier.verify(payload);
+        }
+        catch (error) {
+            throw error;
+        }
+    }
     /**************************************HELPER FUNCTIONS******************************************************/
     generateSecretHash(clientId: string, clientSecret: string, username: string) {
         const hmac = crypto.createHmac('sha256', clientSecret);
