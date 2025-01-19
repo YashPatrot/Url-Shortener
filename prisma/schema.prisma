@@ -38,9 +38,17 @@ model Analytics {
   analyticsId     String   @id @unique
   urlId           String
   visitorIp       String
-  visitorLocation String
+  userAgent       String?  // Track the user's device/browser info (optional)
+  referrer        String?  // Track the source of the traffic (optional)
   visitDate       DateTime @default(now()) // Timestamp for each visit
-  referrer        String? // Track the source of the traffic (optional)
-  userAgent       String? // Track the user's device/browser info (optional)
+  continentName   String?   // Continent name (e.g., North America)
+  countryName     String?   // Country name (e.g., United States)
+  regionName      String?   // State or province (e.g., New York)
+  city            String?   // City name (e.g., New York)
+  postalCode      String?  // Postal/ZIP code (optional)
+  latitude        Json?       // Latitude for geolocation
+  longitude       Json?      // Longitude for geolocation
+  countryFlagEmoj String?  // Country flag emoji (optional)
   url             Url      @relation(fields: [urlId], references: [urlId]) // Foreign key relation to Url model
 }
+

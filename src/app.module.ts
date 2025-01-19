@@ -6,10 +6,11 @@ import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { WebUrlModule } from './web-url/web-url.module';
 import { PublicController } from './public.controller';
+import { AnalyticsModule } from './analytics/analytics.module';
 
 @Global()
 @Module({
-  imports: [AuthModule, AwsModule, ConfigModule.forRoot({ isGlobal: true }), UsersModule, WebUrlModule],
+  imports: [AuthModule, AwsModule, ConfigModule.forRoot({ isGlobal: true }), UsersModule, WebUrlModule, AnalyticsModule],
   controllers: [PublicController],
   providers: [PrismaService],
   exports: [PrismaService]
