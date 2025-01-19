@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignUpDto } from './dto/signup.dto';
 import { SignInDto } from './dto/signin.dto';
@@ -7,7 +7,7 @@ import { UpdatePasswordDto } from './dto/update-password.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/Guards/auth.guard';
 
-@ApiTags('auth')
+@ApiTags('AUTH')
 @Controller('auth')
 export class AuthController {
     constructor(private readonly authService: AuthService) { }
@@ -34,4 +34,5 @@ export class AuthController {
     signout() {
         return this.authService.signout();
     }
+
 }

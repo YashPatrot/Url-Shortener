@@ -59,9 +59,14 @@ export class UsersService {
     }
   }
 
-  remove(userId: string) {
+  async remove(userId: string) {
     try {
-      return this.prismaService.user.delete({
+      await this.prismaService.url.deleteMany({
+        where: {
+          userId: userId
+        }
+      })
+      return await this.prismaService.user.delete({
         where: {
           userId: userId
         }

@@ -6,7 +6,7 @@ import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/Guards/auth.guard';
 import { User } from 'src/decorators/users.decorator';
 
-@ApiTags('users')
+@ApiTags('USERS')
 @UseGuards(AuthGuard)
 @Controller('users')
 @ApiBearerAuth('access-token')
