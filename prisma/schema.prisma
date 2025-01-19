@@ -14,9 +14,33 @@ generator client {
 }
 
 model User {
-  userId        String @id @unique
+  userId       String   @id @unique
   creationDate DateTime @default(now())
   email        String   @unique
   name         String?
+  urls         Url[] // One-to-many relation with Url model
 }
 
+model Url {
+  urlId          String      @id @unique
+  url            String
+  ipAddress      String
+  shortenedUrl   String      @unique
+  creationDate   DateTime    @default(now())
+  visitorsCount  Int         @default(0)
+  isActive       Boolean     @default(true) // Active or inactive URL
+  userId         String // Foreign key to User model
+  user           User        @relation(fields: [userId], references: [userId]) // One-to-many relation
+  analytics      Analytics[] // Relation with Analytics model
+}
+
+model Analytics {
+  analyticsId     String   @id @unique
+  urlId           String
+  visitorIp       String
+  visitorLocation String
+  visitDate       DateTime @default(now()) // Timestamp for each visit
+  referrer        String? // Track the source of the traffic (optional)
+  userAgent       String? // Track the user's device/browser info (optional)
+  url             Url      @relation(fields: [urlId], references: [urlId]) // Foreign key relation to Url model
+}
