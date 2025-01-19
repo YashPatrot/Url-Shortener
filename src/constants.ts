@@ -11,7 +11,11 @@ export const ENV_VARS = {
         AWS_COGNITO_CLIENT_SECRET: 'AWS_COGNITO_CLIENT_SECRET'
     },
     URL_PREFIX: 'URL_PREFIX',
-    CLOUDFLARE_URL: 'CLOUDFLARE_URL'
+    CLOUDFLARE_URL: 'CLOUDFLARE_URL',
+    // APIIP: {
+    //     APIIP_API_KEY: 'APIIP_API_KEY',
+    //     APIIP_API_END_POINT: 'APIIP_API_END_POINT'
+    // }
 }
 
 export const Strings = {
@@ -104,7 +108,17 @@ export const Strings = {
         }
     }
     ,
+    ANALYTICS: {
+        CREATE: {
+            SUCCESS: 'Analytics data saved successfully',
+            FAIL: 'Failed to save analytics data'
+        }, FETCH: {
+            SUCCESS: 'Analytics data fetched successfully',
+            FAIL: 'Failed to fetch analytics data.'
+        },
 
+    }
+    ,
     // Validation messages
     VALIDATION: {
         REQUIRED: 'This field is required.',

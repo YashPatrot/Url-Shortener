@@ -27,7 +27,7 @@ export class AuthService {
                     userId: userIdAttr,
                     email: emailAttr,
                     name: nameAttr,
-                    userStatus: "FORCE_CHANGE_PASSWORD",
+                    userStatus: user.User.UserStatus,
                     createdAt: userCreatedDate
                 }
             }

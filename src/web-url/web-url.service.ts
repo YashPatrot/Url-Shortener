@@ -55,9 +55,9 @@ export class WebUrlService {
    * @returns {Object} An object containing the status, message, and data (list of URLs).
    * @throws {InternalServerErrorException} If there is an error while fetching the URLs.
    */
-  findAll(userId: string, limit: string, offSet: string) {
+  async findAll(userId: string, limit: string, offSet: string) {
     try {
-      const urls = this.prismaService.url.findMany({
+      const urls = await this.prismaService.url.findMany({
         where: {
           userId: userId
         },
@@ -152,9 +152,10 @@ export class WebUrlService {
           shortenedUrl: alias
         }
       });
-      if (response.url) {
-        throw new ConflictException(Strings.URL.ALIAS.CONFLICT.MESSAGE)
+      if (response === null) {
+        return true;
       }
+      throw new ConflictException(Strings.URL.ALIAS.CONFLICT.MESSAGE)
     }
     catch (err) {
       if (err) {
