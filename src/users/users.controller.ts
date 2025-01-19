@@ -18,17 +18,18 @@ export class UsersController {
   //   return this.usersService.create(createUserDto);
   // }
 
-  @Get()
-  @ApiQuery({ name: 'limit', required: false, description: 'Maximum number of users to return' })
-  @ApiQuery({ name: 'offset', required: false, description: 'Offset of users to return' })
-  findAll(@Query('limit') limit?: string, @Query('offset') offSet?: string) {
-    return this.usersService.findAll(limit, offSet);
-  }
+  // @Get('list')
+  // @ApiQuery({ name: 'limit', required: false, description: 'Maximum number of users to return' })
+  // @ApiQuery({ name: 'offset', required: false, description: 'Offset of users to return' })
+  // findAll(@Query('limit') limit?: string, @Query('offset') offSet?: string) {
+  //   return this.usersService.findAll(limit, offSet);
+  // }
 
   @Get('profile')
   @ApiQuery({ name: 'userId', required: false, description: 'Optional user ID' })
   findOne(@User() user: any, @Query('userId') userId?: string) {
-    return this.usersService.findOne(userId || user.sub);
+    const uid = userId ? userId : user.sub
+    return this.usersService.findOne(uid);
   }
 
   @Patch(':userId')
