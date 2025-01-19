@@ -76,10 +76,34 @@ export const Strings = {
 
     // URL Shortener messages
     URL: {
-        CREATED: 'Short URL generated successfully.',
+        CREATED: {
+            SUCCESS: 'Short URL generated successfully.',
+            FAIL: 'Failed to generate short URL.'
+        },
+        FETCH: {
+            SUCCESS: 'Short URL fetched successfully.',
+            FAIL: 'Failed to fetch short URL.'
+        },
+        UPDATED: {
+            SUCCESS: 'Short URL updated successfully.',
+            FAIL: 'Failed to update short URL.'
+        },
+        DELETED: {
+            SUCCESS: 'Short URL deleted successfully.',
+            FAIL: 'Failed to delete short URL.'
+        },
         NOT_FOUND: 'The requested URL does not exist.',
-        DELETED: 'Short URL deleted successfully.',
-    },
+        ALIAS: {
+            CONFLICT: {
+                MESSAGE: 'The provided alias is already in use. Please choose a different alias.'
+            }
+        },
+        DNS: {
+            SUCCESS: 'DNS resolved successfully.',
+            FAIL: 'Failed to resolve DNS.'
+        }
+    }
+    ,
 
     // Validation messages
     VALIDATION: {
@@ -95,3 +119,4 @@ export const Strings = {
         CONTACT_SUPPORT: 'If the issue persists, contact support.',
     },
 };
+
