@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignUpDto } from './dto/signup.dto';
 import { SignInDto } from './dto/signin.dto';
@@ -31,8 +31,8 @@ export class AuthController {
     updatePassword(@Body() data: UpdatePasswordDto) {
         return this.authService.updatePassword(data);
     }
-    signout() {
-        return this.authService.signout();
+    @Post('signout')
+    signout(@Query('accessToken') accessToken: string) {
+        return this.authService.signout(accessToken);
     }
-
 }
