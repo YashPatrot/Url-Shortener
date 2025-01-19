@@ -1,20 +1,17 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateWebUrlDto } from './dto/create-web-url.dto';
-import { UpdateWebUrlDto } from './dto/update-web-url.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ulid } from 'ulid';
 import { ConfigService } from '@nestjs/config';
 import { ENV_VARS } from 'src/constants';
 import { randomBytes } from 'crypto'
-
-
-
 @Injectable()
 export class WebUrlService {
   private readonly URL_PREFIX: string;
+  private readonly CLOUDFLARE_URL: string;
   constructor(private readonly prismaService: PrismaService, private readonly configService: ConfigService) {
     this.URL_PREFIX = this.configService.get<string>(ENV_VARS.URL_PREFIX)
-    this.generateShortenedUrl()
+    this.CLOUDFLARE_URL = this.configService.get<string>(ENV_VARS.CLOUDFLARE_URL)
   }
   async create(createWebUrlDto: CreateWebUrlDto, userId: string) {
     try {
@@ -118,7 +115,7 @@ export class WebUrlService {
         return domain;
       };
       const domainName = extractDomain(url);
-      const clodflareUrl = `https://cloudflare-dns.com/dns-query?name=${domainName}&type=A`;  // Query for A record (IPv4)
+      const clodflareUrl = `${this.CLOUDFLARE_URL}?name=${domainName}&type=A`;  // Query for A record (IPv4)
 
       const response = await fetch(clodflareUrl, {
         method: 'GET',
@@ -133,7 +130,6 @@ export class WebUrlService {
     catch (err) {
       throw new Error(`Failed to Resolve the DNS`);
     }
-
   }
 
   async generateShortenedUrl(): Promise<string> {

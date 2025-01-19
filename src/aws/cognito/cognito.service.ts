@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { CognitoIdentityProviderClient, AdminCreateUserCommand, AdminCreateUserCommandInput, AdminInitiateAuthCommand, AdminInitiateAuthCommandInput, ChangePasswordCommandInput, ChangePasswordCommand, RespondToAuthChallengeCommandInput, RespondToAuthChallengeCommand, ChallengeNameType, AdminCreateUserCommandOutput, AdminInitiateAuthCommandOutput, RespondToAuthChallengeCommandOutput, ChangePasswordCommandOutput } from "@aws-sdk/client-cognito-identity-provider";
+import { CognitoIdentityProviderClient, AdminCreateUserCommand, AdminCreateUserCommandInput, AdminInitiateAuthCommand, AdminInitiateAuthCommandInput, ChangePasswordCommandInput, ChangePasswordCommand, RespondToAuthChallengeCommandInput, RespondToAuthChallengeCommand, ChallengeNameType, AdminCreateUserCommandOutput, AdminInitiateAuthCommandOutput, RespondToAuthChallengeCommandOutput, ChangePasswordCommandOutput, GlobalSignOutCommandInput, GlobalSignOutCommand, GlobalSignOutCommandOutput } from "@aws-sdk/client-cognito-identity-provider";
 import crypto from 'crypto';
 import { CognitoJwtVerifier } from "aws-jwt-verify";
+import { ENV_VARS } from 'src/constants';
 
 @Injectable()
 export class CognitoService {
@@ -12,16 +13,16 @@ export class CognitoService {
     private readonly cognitoIdentityProviderClient: CognitoIdentityProviderClient;
     private readonly cognitoJwtVerifier: any;
     constructor(private readonly configService: ConfigService) {
-        this.AWS_COGNITO_USER_POOL_ID = this.configService.get<string>('AWS_COGNITO_USER_POOL_ID');
-        this.AWS_COGNITO_CLIENT_ID = this.configService.get<string>('AWS_COGNITO_CLIENT_ID');
-        this.AWS_COGNITO_CLIENT_SECRET = this.configService.get<string>('AWS_COGNITO_CLIENT_SECRET');
+        this.AWS_COGNITO_USER_POOL_ID = this.configService.get<string>(ENV_VARS.AWS_COGNITO.AWS_COGNITO_USER_POOL_ID);
+        this.AWS_COGNITO_CLIENT_ID = this.configService.get<string>(ENV_VARS.AWS_COGNITO.AWS_COGNITO_CLIENT_ID);
+        this.AWS_COGNITO_CLIENT_SECRET = this.configService.get<string>(ENV_VARS.AWS_COGNITO.AWS_COGNITO_CLIENT_SECRET);
         this.cognitoIdentityProviderClient = new CognitoIdentityProviderClient({
-            region: this.configService.get<string>('AWS_REGION'),
+            region: this.configService.get<string>(ENV_VARS.AWS.AWS_REGION),
         });
         this.cognitoJwtVerifier = CognitoJwtVerifier.create({
-            region: this.configService.get<string>('AWS_REGION'),
+            region: this.configService.get<string>(ENV_VARS.AWS.AWS_REGION),
             userPoolId: this.AWS_COGNITO_USER_POOL_ID,
-            clientId: this.configService.get<string>('AWS_COGNITO_CLIENT_ID'),
+            clientId: this.configService.get<string>(ENV_VARS.AWS_COGNITO.AWS_COGNITO_CLIENT_ID),
             tokenUse: 'access',
         });
     }
@@ -136,6 +137,32 @@ export class CognitoService {
             throw error;
         }
     }
+
+    /**
+     * This function is used to signout the user.
+     * @param accessToken 
+     * @returns Promise<ChangePasswordCommandOutput>
+     */
+    async signOut(accessToken: string): Promise<GlobalSignOutCommandOutput> {
+        try {
+            const params: GlobalSignOutCommandInput = {
+                AccessToken: accessToken
+            }
+            return this.cognitoIdentityProviderClient.send(new GlobalSignOutCommand(params))
+
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+
+    /**************************************HELPER FUNCTIONS******************************************************/
+
+    /**
+     * This function is used to validate the access token and decrypt it.
+     * @param payload 
+     * @returns Promise<any>
+     */
     async validateAccessToken(payload: any): Promise<any> {
         try {
             return await this.cognitoJwtVerifier.verify(payload);
@@ -144,10 +171,21 @@ export class CognitoService {
             throw error;
         }
     }
-    /**************************************HELPER FUNCTIONS******************************************************/
-    generateSecretHash(clientId: string, clientSecret: string, username: string) {
-        const hmac = crypto.createHmac('sha256', clientSecret);
-        hmac.update(username + clientId);
-        return hmac.digest('base64');
+    /**
+     * This function is used to generate the secretHash.
+     * @param clientId 
+     * @param clientSecret 
+     * @param username 
+     * @returns string
+     */
+    generateSecretHash(clientId: string, clientSecret: string, username: string): string {
+        try {
+            const hmac = crypto.createHmac('sha256', clientSecret);
+            hmac.update(username + clientId);
+            return hmac.digest('base64');
+        }
+        catch (error) {
+            throw error;
+        }
     }
 }
