@@ -55,9 +55,22 @@ export const Strings = {
 
     // User-related messages
     USER: {
-        CREATED: 'User account created successfully.',
-        UPDATED: 'User details updated successfully.',
-        DELETED: 'User account deleted successfully.',
+        CREATED: {
+            SUCCESS: 'User account created successfully.',
+            FAIL: 'User account creation failed.'
+        },
+        UPDATED: {
+            SUCCESS: 'User details updated successfully.',
+            FAIL: 'Failed to update user details.'
+        },
+        DELETED: {
+            SUCCESS: 'User account deleted successfully.',
+            FAIL: 'Failed to delete user account.'
+        },
+        FETCH: {
+            SUCCESS: 'User details fetched successfully.',
+            FAIL: 'Failed to fetch user details.'
+        },
         NOT_FOUND: 'User not found.',
     },
 

@@ -21,14 +21,14 @@ export class AuthService {
             const userIdAttr = user.User.Attributes.find(attr => attr.Name === 'sub');
             const userCreatedDate = user.User.UserCreateDate;
             return {
-                "status": "success",
-                "message": Strings.AUTH.SIGNUP_SUCCESS,
-                "data": {
-                    "userId": userIdAttr,
-                    "email": emailAttr,
-                    "name": nameAttr,
-                    "userStatus": "FORCE_CHANGE_PASSWORD",
-                    "createdAt": userCreatedDate
+                status: "success",
+                message: Strings.AUTH.SIGNUP_SUCCESS,
+                data: {
+                    userId: userIdAttr,
+                    email: emailAttr,
+                    name: nameAttr,
+                    userStatus: "FORCE_CHANGE_PASSWORD",
+                    createdAt: userCreatedDate
                 }
             }
 
@@ -54,14 +54,16 @@ export class AuthService {
                 const userAttributes = user.ChallengeParameters.userAttributes;
                 const session = user.Session;
                 return {
-                    "status": "success",
-                    "challengeName": challengeName,
-                    "challengeParameters": {
-                        "userIdForSrp": userIdForSrp,
-                        "requiredAttributes": requiredAttributes,
-                        "userAttributes": userAttributes
-                    },
-                    "session": session
+                    status: "success",
+                    data: {
+                        challengeName: challengeName,
+                        challengeParameters: {
+                            userIdForSrp: userIdForSrp,
+                            requiredAttributes: requiredAttributes,
+                            userAttributes: userAttributes
+                        },
+                        session: session
+                    }
                 };
             }
 
@@ -74,11 +76,13 @@ export class AuthService {
 
                 return {
                     status: "success",
-                    AccessToken: accessToken,
-                    ExpiresIn: expiresIn,
-                    IdToken: idToken,
-                    RefreshToken: refreshToken,
-                    TokenType: tokenType
+                    data: {
+                        AccessToken: accessToken,
+                        ExpiresIn: expiresIn,
+                        IdToken: idToken,
+                        RefreshToken: refreshToken,
+                        TokenType: tokenType
+                    }
                 }
 
             }
@@ -103,11 +107,13 @@ export class AuthService {
 
             return {
                 status: "success",
-                AccessToken: accessToken,
-                ExpiresIn: expiresIn,
-                IdToken: idToken,
-                RefreshToken: refreshToken,
-                TokenType: tokenType
+                data: {
+                    AccessToken: accessToken,
+                    ExpiresIn: expiresIn,
+                    IdToken: idToken,
+                    RefreshToken: refreshToken,
+                    TokenType: tokenType
+                }
             }
         }
         catch (error) {
