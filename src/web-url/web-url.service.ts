@@ -24,7 +24,7 @@ export class WebUrlService {
   async create(createWebUrlDto: CreateWebUrlDto, userId: string) {
     try {
       const ipAddress = await this.getIpAddress(createWebUrlDto.url);
-      await this.checkForAlias(createWebUrlDto.customAlias);
+      createWebUrlDto.customAlias ? await this.checkForAlias(createWebUrlDto.customAlias) : null
       const generatedUrl = createWebUrlDto.customAlias ? createWebUrlDto.customAlias : await this.generateShortenedUrl()
       const url = await this.prismaService.url.create({
         data: {
