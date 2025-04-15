@@ -1,133 +1,153 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+---
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# 🔗 URL Shortener
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+A powerful and modular **URL shortening service** built with **NestJS** and **Prisma**, featuring click analytics, custom aliases, and JWT-based user authentication.
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🌟 Features
 
-## Project setup
+- 🔗 **Shorten Long URLs** into compact, shareable links  
+- ✍️ **Custom Aliases** for personalized and memorable short URLs  
+- 📈 **Click Analytics** with visitor tracking (IP, user agent, referrer)  
+- 🔐 **JWT Authentication** for secure access and management  
+- 📘 **Swagger API Docs** for easy integration and testing  
 
+---
+
+## ⚙️ Tech Stack
+
+| Layer         | Tool/Service                      |
+|---------------|-----------------------------------|
+| Backend       | [NestJS](https://nestjs.com/)     |
+| ORM           | [Prisma](https://prisma.io/) + Accelerate |
+| Database      | SQLite (Development)              |
+| Auth          | JWT (Bearer Tokens)               |
+| Docs          | [Swagger](https://swagger.io/)    |
+| DNS Resolver  | Cloudflare DNS over HTTPS         |
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js `v14+`
+- npm or yarn
+
+### Installation
+
+1. **Clone the repository**
 ```bash
-$ npm install
+git clone https://github.com/YashPatrot/Url-Shortener.git
+cd Url-Shortener
 ```
 
-## Compile and run the project
-
+2. **Install dependencies**
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
 ```
 
-## Read-Eval-Print-Loop(REPL)
+3. **Set up environment variables**
 
-```bash
-# To run your NestJS application in REPL mode
-$ npm run start -- --entryFile repl
-``` 
+Create a `.env` file in the root directory using the template below:
 
-## SWC (Speedy Web Compiler)
+```env
+# Base URL for all short links
+URL_PREFIX=http://localhost:3000/
 
-```bash
-# To run the application in watch mode
-$ nest start -b swc
+# Cloudflare DNS API for IP resolution
+CLOUDFLARE_URL=https://cloudflare-dns.com/dns-query
+
+# Application port (optional, defaults to 3000)
+PORT=3000
 ```
 
-## Generate Documentation
-
+4. **Initialize database**
 ```bash
-#To generate the documentation for our application, use the following command:
-$npx @compodoc/compodoc -p tsconfig.json -s
+npx prisma migrate dev
 ```
 
-## Prisma
-
+5. **Start the application**
 ```bash
-# Initialize Prisma
-$ npx prisma init
-
-#Generate Prisma client after making changes to the schema
-$ npx prisma generate
-
-#Run database migrations
-$ npx prisma migrate dev --name init
+npm run start:dev
 ```
 
-## Run tests
+---
+
+## 📚 API Documentation
+
+Swagger UI is available at:  
+👉 [http://localhost:3000/api](http://localhost:3000/api)
+
+---
+
+## 🔌 API Endpoints Overview
+
+| Method | Endpoint             | Description                          |
+|--------|----------------------|--------------------------------------|
+| POST   | `/web-url`           | Create a shortened URL               |
+| GET    | `/web-url`           | List all URLs for the user           |
+| GET    | `/web-url/:id`       | Get details of a specific URL        |
+| DELETE | `/web-url/:id`       | Delete a specific URL                |
+| GET    | `/:url`              | Public redirect to the original URL  |
+
+---
+
+## 🔍 How It Works
+
+1. Users submit a **long URL** and optionally a **custom alias**.
+2. The backend:
+   - Saves the original URL.
+   - Generates a **random 10-character slug** if no alias is provided.
+   - Resolves IP address via **Cloudflare DNS over HTTPS**.
+   - Logs metadata on each redirect.
+3. Shortened URLs redirect via a public endpoint: `/:slug`.
+
+---
+
+## 🧪 Testing
 
 ```bash
-# unit tests
-$ npm run test
+# Unit tests
+npm run test
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+# End-to-end tests
+npm run test:e2e
 ```
 
-## Deployment
+---
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## 🤝 Contributing
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+We welcome contributions! Follow these steps:
 
 ```bash
-$ npm install -g mau
-$ mau deploy
+1. Fork the repo
+2. Create your feature branch: git checkout -b feature/amazing-feature
+3. Commit your changes: git commit -m "Add amazing feature"
+4. Push to the branch: git push origin feature/amazing-feature
+5. Open a pull request
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+---
 
-## Resources
+## 📝 License
 
-Check out a few resources that may come in handy when working with NestJS:
+This project is licensed under the **MIT License**. See the [LICENSE](./LICENSE) file for details.
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+---
 
-## Support
+## 🙏 Acknowledgements
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- [NestJS](https://nestjs.com/)
+- [Prisma](https://www.prisma.io/)
+- [Swagger](https://swagger.io/)
+- [Cloudflare DNS](https://developers.cloudflare.com/1.1.1.1/dns-over-https/)
 
-## Stay in touch
+---
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+> Built with ❤️ by [YashPatrot](https://github.com/YashPatrot)
 
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+---
